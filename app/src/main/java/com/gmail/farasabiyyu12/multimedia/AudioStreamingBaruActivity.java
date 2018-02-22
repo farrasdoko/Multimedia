@@ -13,82 +13,79 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AudioStreamingActivity extends AppCompatActivity {
+public class AudioStreamingBaruActivity extends AppCompatActivity {
 
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-    @BindView(R.id.btnPlay3)
-    Button btnPlay3;
-    @BindView(R.id.btnStop3)
-    Button btnStop3;
+    @BindView(R.id.progressBar2)
+    ProgressBar progressBar2;
+    @BindView(R.id.btnPlay4)
+    Button btnPlay4;
+    @BindView(R.id.btnStop4)
+    Button btnStop4;
 
     MediaPlayer player;
-    String url = "http://103.16.198.36:9160/;stream/1"; // (verivied)
-    String url3 = "http://live.indostreamserver.com:9070/batamfm"; //batamFM
     String url5 = "http://103.226.246.42/masima-pramborsjakarta"; //prambors JKT (verivied)
-    String url2 = "http://uk6.internet-radio.com:8465/1"; //SHOUTcast  (verivied)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_audio_streaming);
+        setContentView(R.layout.activity_audio_streaming_baru);
         ButterKnife.bind(this);
 
         //TODO setProgressBar
-        progressBar.setIndeterminate(true);
-        progressBar.setVisibility(View.INVISIBLE);
-        progressBar.setMax(100);
+        progressBar2.setIndeterminate(true);
+        progressBar2.setVisibility(View.INVISIBLE);
+        progressBar2.setMax(100);
 
-        //TODO Create Method Set Up Media Player
         setPlaying();
     }
 
     private void setPlaying() {
         player = new MediaPlayer();
+
         try {
-            player.setDataSource(url);
+            player.setDataSource(url5);
         } catch (IOException e) {
             e.printStackTrace();
         }
         player.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-                progressBar.setIndeterminate(true);
-                progressBar.setSecondaryProgress(100);
+                progressBar2.setIndeterminate(true);
+                progressBar2.setSecondaryProgress(100);
             }
         });
     }
 
-    @OnClick({R.id.btnPlay3, R.id.btnStop3})
+    @OnClick({R.id.btnPlay4, R.id.btnStop4})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btnPlay3:
-                progressBar.setVisibility(View.VISIBLE);
+            case R.id.btnPlay4:
+                progressBar2.setVisibility(View.VISIBLE);
                 setProgressBarIndeterminate(true);
                 player.prepareAsync();
                 player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
                         mediaPlayer.start();
-                        progressBar.setIndeterminate(false);
+                        progressBar2.setIndeterminate(false);
                     }
                 });
-                btnPlay3.setEnabled(false);
-                btnStop3.setEnabled(true);
+                btnPlay4.setEnabled(false);
+                btnStop4.setEnabled(true);
                 break;
-            case R.id.btnStop3:
-//                if(player == null) return;
-//                if (player.isPlaying()){
+            case R.id.btnStop4:
+                if(player == null) return;
+                if (player.isPlaying()){
                     player.stop();
                     player.release();
                     setPlaying();
-                    progressBar.setVisibility(View.INVISIBLE);
-                    progressBar.setIndeterminate(false);
+                    progressBar2.setVisibility(View.INVISIBLE);
+                    progressBar2.setIndeterminate(false);
 
-                    btnStop3.setEnabled(false);
-                    btnPlay3.setEnabled(true);
-//                }
-//                break;
+                    btnStop4.setEnabled(false);
+                    btnPlay4.setEnabled(true);
+                }
+                break;
         }
     }
 }
